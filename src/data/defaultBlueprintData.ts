@@ -45,9 +45,9 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     problem:
       'Menutup celah selisih uang pergantian shift kasir, mencegah stok barang minus di pembukuan, dan memastikan cetak struk Bluetooth stabil.',
     features: [
-      '✔ Atomic Shift Closing: Kunci berantai antar shift kasir.',
-      '✔ Anti-Minus Guard: Tolak transaksi otomatis jika stok kurang.',
-      '✔ Direct ESC/POS & Dynamic QRIS: Cetak struk thermal cepat.'
+      '[OK] Atomic Shift Closing: Kunci berantai antar shift kasir.',
+      '[OK] Anti-Minus Guard: Tolak transaksi otomatis jika stok kurang.',
+      '[OK] Direct ESC/POS & Dynamic QRIS: Cetak struk thermal cepat.'
     ],
     mandorRole: [
       '• Merancang logika akuntansi & kunci shift.',
@@ -78,9 +78,9 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     problem:
       'Melindungi dokumen riset 245 halaman agar tidak bisa diunduh paksa (IDM) dan membatasi satu lisensi hanya untuk maksimal 2 perangkat aktif.',
     features: [
-      '✔ Canvas Page Streaming: Tanpa mengekspos URL PDF asli.',
-      '✔ PostgreSQL Row-Locking: Kunci keras maksimal 2 device.',
-      '✔ CORS-Free Proxy: Streaming cepat dari penyimpanan cloud.'
+      '[OK] Canvas Page Streaming: Tanpa mengekspos URL PDF asli.',
+      '[OK] PostgreSQL Row-Locking: Kunci keras maksimal 2 device.',
+      '[OK] CORS-Free Proxy: Streaming cepat dari penyimpanan cloud.'
     ],
     mandorRole: [
       '• Merancang query kunci atomik PostgreSQL.',
@@ -111,9 +111,9 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     problem:
       'Membersihkan puluhan ribu komentar medsos penuh singkatan/bahasa gaul Indonesia menjadi klasifikasi sentimen yang akurat tanpa membuka data rahasia klien.',
     features: [
-      '✔ Kamus Normalisasi Slang & Singkatan Lokal Indonesia.',
-      '✔ Batch Pipeline Stabil untuk Puluhan Ribu Baris Teks.',
-      '✔ Redaksi Otomatis Identitas & Data Rahasia (PII).'
+      '[OK] Kamus Normalisasi Slang & Singkatan Lokal Indonesia.',
+      '[OK] Batch Pipeline Stabil untuk Puluhan Ribu Baris Teks.',
+      '[OK] Redaksi Otomatis Identitas & Data Rahasia (PII).'
     ],
     mandorRole: [
       '• Merancang arsitektur kamus slang & sanitasi data.',
@@ -135,9 +135,9 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     problem:
       'Menjalankan otomasi di atas HP Android fisik (bukan emulator) dengan lekukan sentuhan jari manusia alami agar aman dari deteksi anti-bot.',
     features: [
-      '✔ 100% Perangkat Android Fisik via Jembatan ADB.',
-      '✔ Generator Kurva Bezier & Micro-Jitter Manusia Alami.',
-      '✔ Auto-Recovery Saat Aplikasi Target Crash/Pop-up.'
+      '[OK] 100% Perangkat Android Fisik via Jembatan ADB.',
+      '[OK] Generator Kurva Bezier & Micro-Jitter Manusia Alami.',
+      '[OK] Auto-Recovery Saat Aplikasi Target Crash/Pop-up.'
     ],
     mandorRole: [
       '• Merancang rumus matematika kurva Bezier.',

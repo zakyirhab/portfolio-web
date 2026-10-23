@@ -1,3 +1,5 @@
+export type Language = 'id' | 'en'
+
 export interface TrackRecordItem {
   id: string
   title: string
@@ -44,4 +46,5 @@ export interface PortfolioState {
   profile: ProfileData
   projects: BlueprintProject[]
   adminPin: string
+  language?: Language
 }

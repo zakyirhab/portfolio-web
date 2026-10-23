@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import type { ProfileData, BlueprintProject, PortfolioState, ProjectPhoto } from '../types/portfolio'
+import type { ProfileData, BlueprintProject, PortfolioState, ProjectPhoto, Language } from '../types/portfolio'
 import { DEFAULT_PROFILE, DEFAULT_PROJECTS } from '../data/defaultBlueprintData'
+import { TRANSLATIONS, type TranslationDictionary } from '../data/translations'
 
 interface PortfolioContextType {
   profile: ProfileData
@@ -8,6 +9,10 @@ interface PortfolioContextType {
   adminPin: string
   isBlueprintMode: boolean
   toggleTheme: () => void
+  language: Language
+  setLanguage: (lang: Language) => void
+  toggleLanguage: () => void
+  t: TranslationDictionary
   isAdminOpen: boolean
   openAdmin: () => void
   closeAdmin: () => void
@@ -32,6 +37,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [projects, setProjects] = useState<BlueprintProject[]>(DEFAULT_PROJECTS)
   const [adminPin, setAdminPin] = useState<string>(DEFAULT_PIN)
   const [isBlueprintMode, setIsBlueprintMode] = useState<boolean>(false)
+  const [language, setLanguageState] = useState<Language>('id')
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false)
 
   // Load from LocalStorage
@@ -43,6 +49,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (parsed.profile) setProfile(parsed.profile)
         if (parsed.projects && parsed.projects.length > 0) setProjects(parsed.projects)
         if (parsed.adminPin) setAdminPin(parsed.adminPin)
+        if (parsed.language) setLanguageState(parsed.language)
       }
     } catch (e) {
       console.error('Failed to load portfolio state', e)
@@ -53,14 +60,25 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       setIsBlueprintMode(true)
       document.documentElement.classList.add('blueprint-mode')
     }
+
+    const savedLang = localStorage.getItem('zaky_portfolio_lang') as Language | null
+    if (savedLang === 'en' || savedLang === 'id') {
+      setLanguageState(savedLang)
+    }
   }, [])
 
   // Auto save to LocalStorage
-  const saveState = (newProfile: ProfileData, newProjects: BlueprintProject[], newPin: string) => {
+  const saveState = (
+    newProfile: ProfileData,
+    newProjects: BlueprintProject[],
+    newPin: string,
+    newLang: Language = language
+  ) => {
     const payload: PortfolioState = {
       profile: newProfile,
       projects: newProjects,
-      adminPin: newPin
+      adminPin: newPin,
+      language: newLang
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   }
@@ -77,6 +95,16 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
       return next
     })
+  }
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang)
+    localStorage.setItem('zaky_portfolio_lang', lang)
+    saveState(profile, projects, adminPin, lang)
+  }
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'id' ? 'en' : 'id')
   }
 
   const updateProfile = (data: Partial<ProfileData>) => {
@@ -140,14 +168,16 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setProfile(DEFAULT_PROFILE)
     setProjects(DEFAULT_PROJECTS)
     setAdminPin(DEFAULT_PIN)
-    saveState(DEFAULT_PROFILE, DEFAULT_PROJECTS, DEFAULT_PIN)
+    setLanguageState('id')
+    saveState(DEFAULT_PROFILE, DEFAULT_PROJECTS, DEFAULT_PIN, 'id')
   }
 
   const exportDataJson = () => {
     const payload: PortfolioState = {
       profile,
       projects,
-      adminPin
+      adminPin,
+      language
     }
     return JSON.stringify(payload, null, 2)
   }
@@ -159,7 +189,13 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setProfile(parsed.profile)
         setProjects(parsed.projects)
         if (parsed.adminPin) setAdminPin(parsed.adminPin)
-        saveState(parsed.profile, parsed.projects, parsed.adminPin || adminPin)
+        if (parsed.language) setLanguageState(parsed.language)
+        saveState(
+          parsed.profile,
+          parsed.projects,
+          parsed.adminPin || adminPin,
+          parsed.language || language
+        )
         return true
       }
       return false
@@ -169,6 +205,8 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   }
 
+  const t = TRANSLATIONS[language]
+
   return (
     <PortfolioContext.Provider
       value={{
@@ -177,6 +215,10 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         adminPin,
         isBlueprintMode,
         toggleTheme,
+        language,
+        setLanguage,
+        toggleLanguage,
+        t,
         isAdminOpen,
         openAdmin: () => setIsAdminOpen(true),
         closeAdmin: () => setIsAdminOpen(false),

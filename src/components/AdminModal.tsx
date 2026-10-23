@@ -144,7 +144,7 @@ export const AdminModal: React.FC = () => {
         {/* Top Header */}
         <div className="flex items-center justify-between pb-4 mb-4 border-b ledger-border">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[#FF3B00] animate-pulse"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FF3B00] animate-pulse"></span>
             <span className="font-bold text-sm text-[#FF3B00]">PANEL ADMIN MANDOR TEKNIS SISTEM</span>
             <span className="text-[10px] surface-muted px-2 py-0.5 rounded border ledger-border">
               zakyirhab.it.com
@@ -155,14 +155,14 @@ export const AdminModal: React.FC = () => {
             onClick={closeAdmin}
             className="px-2.5 py-1 rounded bg-[#121212] text-white hover:bg-[#FF3B00] font-bold transition cursor-pointer"
           >
-            ✕ Tutup
+            [Tutup]
           </button>
         </div>
 
         {/* PIN LOGIN GATE */}
         {!isAuthenticated ? (
           <div className="max-w-md mx-auto py-12 text-center space-y-4">
-            <div className="text-3xl">🔐</div>
+            <div className="font-mono text-xs text-[#FF3B00] font-bold">[AUTH GATE]</div>
             <h3 className="font-display font-bold text-lg text-white">Masukkan PIN Admin</h3>
             <p className="text-secondary-tone text-xs leading-relaxed">
               Panel ini untuk mengubah foto profil, rekam jejak, deskripsi sistem, atau bukti screenshot tanpa harus mengedit kodingan.
@@ -205,7 +205,7 @@ export const AdminModal: React.FC = () => {
                     : 'surface-muted border ledger-border hover:border-[#FF3B00]'
                 }`}
               >
-                👤 Data Diri, Foto &amp; Rekam Jejak
+                [01] Data Diri &amp; Foto Profil
               </button>
               <button
                 onClick={() => setActiveTab('projects')}
@@ -215,7 +215,7 @@ export const AdminModal: React.FC = () => {
                     : 'surface-muted border ledger-border hover:border-[#FF3B00]'
                 }`}
               >
-                📁 Kelola 4 Proyek &amp; Foto Bukti
+                [02] Kelola Proyek &amp; Foto Bukti
               </button>
               <button
                 onClick={() => setActiveTab('security')}
@@ -225,14 +225,14 @@ export const AdminModal: React.FC = () => {
                     : 'surface-muted border ledger-border hover:border-[#FF3B00]'
                 }`}
               >
-                🔑 Ganti PIN &amp; Backup Data
+                [03] Ganti PIN &amp; Backup
               </button>
 
               <button
                 onClick={() => setIsAuthenticated(false)}
-                className="ml-auto px-2.5 py-1 text-red-500 hover:underline cursor-pointer"
+                className="ml-auto px-2.5 py-1 text-red-500 hover:underline cursor-pointer font-bold"
               >
-                Kunci / Logout
+                [Kunci / Logout]
               </button>
             </div>
 
@@ -240,7 +240,7 @@ export const AdminModal: React.FC = () => {
             {activeTab === 'profile' && (
               <form onSubmit={handleSaveProfile} className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
-                  {/* Photo Preview & Upload */}
+                  {/* Photo Preview & Upload (EXCLUSIVE FOR ADMIN) */}
                   <div className="p-4 rounded border ledger-border surface-muted text-center space-y-3">
                     <span className="font-bold text-[11px] block text-[#FF3B00]">FOTO PROFIL</span>
                     <div className="w-28 h-36 mx-auto rounded border-2 border-[#121212] overflow-hidden bg-black shadow-[3px_3px_0px_#FF3B00]">
@@ -260,7 +260,7 @@ export const AdminModal: React.FC = () => {
                       />
                     </label>
                     <span className="text-[10px] text-secondary-tone block">
-                      Foto langsung tersimpan otomatis ke browser/web.
+                      Foto langsung tersimpan otomatis ke storage web.
                     </span>
                   </div>
 
@@ -449,7 +449,7 @@ export const AdminModal: React.FC = () => {
                       />
                     </div>
 
-                    {/* Photos list if hasPhotos */}
+                    {/* Photos list if hasPhotos (ADMIN ONLY UPLOAD) */}
                     {activeProject.hasPhotos && (
                       <div className="p-3 rounded border ledger-border surface-card space-y-3">
                         <div className="flex items-center justify-between">
@@ -467,12 +467,13 @@ export const AdminModal: React.FC = () => {
                                 if (!file) return
                                 const reader = new FileReader()
                                 reader.onload = (ev) => {
-                                  if (ev.target?.result) {
+                                  const res = ev.target?.result
+                                  if (res) {
                                     updateProject(activeProject.id, {
                                       photos: [
                                         ...activeProject.photos,
                                         {
-                                          url: ev.target.result as string,
+                                          url: res as string,
                                           caption: `Foto Dokumentasi: ${file.name}`
                                         }
                                       ]
@@ -593,7 +594,7 @@ export const AdminModal: React.FC = () => {
                       onClick={handleExport}
                       className="btn-architect px-4 py-2 rounded font-bold cursor-pointer"
                     >
-                      📥 Download Backup JSON
+                      Download Backup JSON
                     </button>
 
                     <button
@@ -606,7 +607,7 @@ export const AdminModal: React.FC = () => {
                       }}
                       className="px-4 py-2 rounded border border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-bold transition cursor-pointer"
                     >
-                      ⚠️ Reset ke Default Blueprint
+                      Reset ke Default Blueprint
                     </button>
                   </div>
 

@@ -6,7 +6,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
   activeIndex,
   onSelectTab
 }) => {
-  const { projects, addProjectPhoto, openAdmin } = usePortfolio()
+  const { projects, t } = usePortfolio()
   const [rightMode, setRightMode] = useState<'sim' | 'photo'>('sim')
   const [currentPhotoIdx, setCurrentPhotoIdx] = useState<number>(0)
 
@@ -27,7 +27,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
   // Simulator 4: ADB Bezier Canvas
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [bezierTelemetry, setBezierTelemetry] = useState<{ text: string; safe: boolean }>({
-    text: 'KURVA BEZIER MANUSIA (ADB FISIK)',
+    text: 'KURVA BEZIER MANUSIA (ADB FISIK) — AMAN / NATURAL',
     safe: true
   })
 
@@ -91,7 +91,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
       ctx.stroke()
 
       setBezierTelemetry({
-        text: 'KURVA BEZIER + JITTER (ADB FISIK) — AMAN / MANUSIA ALAMI',
+        text: 'KURVA BEZIER + JITTER (ADB FISIK) — AMAN / HUMAN-LIKE',
         safe: true
       })
     } else {
@@ -105,7 +105,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
       ctx.setLineDash([])
 
       setBezierTelemetry({
-        text: 'GARIS LINIER KONSTAN (EMULATOR BOT) — TERDETEKSI & DIBLOKIR!',
+        text: 'GARIS LINIER KONSTAN (EMULATOR BOT) — DETECTED & BLOCKED',
         safe: false
       })
     }
@@ -164,7 +164,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
         content: (
           <>
             <div className="p-1 bg-red-100 text-red-800 font-bold rounded">
-              [DITOLAK] GUARD ANTI-SALDO MINUS!
+              [DITOLAK] GUARD ANTI-SALDO MINUS
             </div>
             <div className="mt-1">Minta: 10 Pack | Stok: {posStock} Pack</div>
             <div className="text-[10px] text-stone-600">Transaksi dibatalkan otomatis.</div>
@@ -190,21 +190,6 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
     }
   }
 
-  const handleUploadProjectPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      if (event.target?.result) {
-        addProjectPhoto(currentProject.id, {
-          url: event.target.result as string,
-          caption: `Dokumentasi Baru: ${file.name}`
-        })
-      }
-    }
-    reader.readAsDataURL(file)
-  }
-
   const currentPhoto = currentProject.photos[currentPhotoIdx] || currentProject.photos[0]
 
   return (
@@ -212,14 +197,14 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
         <div>
           <div className="font-mono text-xs text-[#FF3B00] font-bold tracking-widest uppercase mb-1.5">
-            // 03. 4 BUKTI SISTEM NYATA LINTAS INDUSTRI
+            {t.workbench.sectionTag}
           </div>
           <h2 className="font-display font-bold text-2xl sm:text-3xl tracking-tight">
-            Bukti Kemampuan Belajar &amp; Eksekusi di 4 Medan Teknis Berbeda
+            {t.workbench.title}
           </h2>
         </div>
         <p className="text-xs sm:text-sm text-secondary-tone max-w-md font-mono">
-          Dilengkapi <strong>Simulator Interaktif</strong> dan <strong>Galeri Dokumentasi Foto</strong> (khusus proyek NLP hanya menampilkan simulasi demi privasi data).
+          {t.workbench.desc}
         </p>
       </div>
 
@@ -246,7 +231,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                 {proj.code}
               </span>
               <span className="text-secondary-tone">
-                {proj.hasPhotos ? 'SIMULASI + FOTO' : 'MURNI SIMULASI'}
+                {proj.hasPhotos ? t.workbench.tabSimAndPhoto : t.workbench.tabSimOnly}
               </span>
             </div>
             <h3 className="font-display font-bold text-sm sm:text-base group-hover:text-[#FF3B00] transition">
@@ -290,14 +275,14 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
           <div className="lg:col-span-6 p-5 sm:p-6 border-b lg:border-b-0 lg:border-r ledger-border space-y-5">
             <div>
               <span className="font-mono text-[11px] uppercase text-secondary-tone font-bold block mb-1">
-                MASALAH INTI YANG DISELESAIKAN
+                {t.workbench.problemLabel}
               </span>
               <p className="text-sm leading-relaxed font-medium">{currentProject.problem}</p>
             </div>
 
             <div>
               <span className="font-mono text-[11px] uppercase text-secondary-tone font-bold block mb-1.5">
-                ARSITEKTUR KUNCI
+                {t.workbench.archLabel}
               </span>
               <ul className="space-y-1.5 text-xs sm:text-sm">
                 {currentProject.features.map((feat, fIdx) => (
@@ -311,13 +296,13 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
             {/* TRANSPARENT AUDIT: MANDOR VS AI */}
             <div className="border ledger-border rounded-lg overflow-hidden">
               <div className="surface-muted px-3.5 py-2 border-b ledger-border flex items-center justify-between font-mono text-[11px]">
-                <span className="font-bold">PEMBAGIAN TUGAS: ARSITEK VS. AI</span>
-                <span className="text-[#FF3B00] font-bold">100% DIAUDIT</span>
+                <span className="font-bold">{t.workbench.divisionHeader}</span>
+                <span className="text-[#FF3B00] font-bold">100% AUDITED</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x ledger-border text-xs">
                 <div className="p-3.5 surface-card">
                   <span className="font-mono text-[11px] font-bold text-[#FF3B00] block mb-1.5">
-                    PERAN SAYA (ARSITEK):
+                    {t.workbench.mandorLabel}
                   </span>
                   <ul className="space-y-1.5">
                     {currentProject.mandorRole.map((role, rIdx) => (
@@ -329,7 +314,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                 </div>
                 <div className="p-3.5 surface-muted">
                   <span className="font-mono text-[11px] font-bold text-secondary-tone block mb-1.5">
-                    PERAN AI (EKSEKUTOR):
+                    {t.workbench.aiLabel}
                   </span>
                   <ul className="space-y-1.5 text-secondary-tone">
                     {currentProject.aiRole.map((role, aIdx) => (
@@ -343,7 +328,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
             </div>
           </div>
 
-          {/* RIGHT COLUMN: MODE SWITCHER (SIMULATOR vs FOTO BUKTI) */}
+          {/* RIGHT COLUMN: MODE SWITCHER (SIMULATOR vs FOTO BUKTI - VIEW ONLY, NO PUBLIC UPLOAD) */}
           <div className="lg:col-span-6 p-5 sm:p-6 surface-muted flex flex-col justify-between">
             <div>
               {/* Top Mode Switcher Bar */}
@@ -357,7 +342,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                         : 'text-secondary-tone hover:text-[#FF3B00]'
                     }`}
                   >
-                    ⚡ Simulasi Interaktif
+                    {t.workbench.modeSim}
                   </button>
                   {currentProject.hasPhotos && (
                     <button
@@ -368,14 +353,14 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                           : 'text-secondary-tone hover:text-[#FF3B00]'
                       }`}
                     >
-                      📸 Bukti Foto / Screenshot
+                      {t.workbench.modePhoto}
                     </button>
                   )}
                 </div>
 
                 {!currentProject.hasPhotos && (
                   <span className="font-mono text-[11px] px-2 py-1 rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 font-semibold">
-                    🔒 Proyek NLP: Hanya Simulasi (Privasi Data)
+                    {t.workbench.nlpPrivacyNotice}
                   </span>
                 )}
               </div>
@@ -420,7 +405,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                           onClick={() => handleSimPos('close_shift')}
                           className="w-full py-2 px-3 rounded bg-[#121212] text-white hover:bg-[#FF3B00] font-semibold transition cursor-pointer"
                         >
-                          🔒 Atomic Shift Closing &amp; Cetak Struk
+                          [LOCK] Atomic Shift Closing &amp; Cetak Struk
                         </button>
                       </div>
 
@@ -461,7 +446,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                       </p>
                       <div className="space-y-2 font-mono text-xs">
                         <div className="p-2.5 rounded surface-card border border-emerald-500 flex items-center justify-between">
-                          <span>📱 Perangkat #1: MacBook Air</span>
+                          <span>Perangkat #1: MacBook Air</span>
                           <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold">
                             AKTIF (1/2)
                           </span>
@@ -469,8 +454,8 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                         <div className="p-2.5 rounded surface-card border ledger-border flex items-center justify-between">
                           <span>
                             {drmSlot2 === 'active'
-                              ? '📱 Perangkat #2: iPad Pro'
-                              : '💻 Slot Perangkat #2: [KOSONG]'}
+                              ? 'Perangkat #2: iPad Pro'
+                              : 'Slot Perangkat #2: [KOSONG]'}
                           </span>
                           <span
                             className={`px-2 py-0.5 rounded ${
@@ -489,7 +474,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                               : 'border ledger-border opacity-75'
                           }`}
                         >
-                          <span>🕵️ Perangkat #3 (Bagi-Pakai Akun)</span>
+                          <span>Perangkat #3 (Bagi-Pakai Akun)</span>
                           <span
                             className={`px-2 py-0.5 rounded font-bold ${
                               drmSlot3 === 'blocked' ? 'bg-red-600 text-white' : 'surface-muted'
@@ -518,7 +503,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                           }}
                           className="flex-1 py-2 px-3 rounded bg-[#FF3B00] text-white font-semibold transition cursor-pointer"
                         >
-                          ⚡ Paksa Device #3
+                          &rarr; Paksa Device #3
                         </button>
                         <button
                           onClick={() => {
@@ -566,7 +551,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                               : 'ledger-border hover:border-[#FF3B00]'
                           }`}
                         >
-                          Sampel Pujian: "Gokil sih fitur barunya sat-set bgt ga pake ribet mantul pokoke 👍"
+                          Sampel Pujian: "Luar biasa fitur barunya cepat dan tanggap sekali tidak pakai rumit mantap betul pokoknya"
                         </button>
                       </div>
 
@@ -619,13 +604,13 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                           onClick={() => drawTouchCurve('human')}
                           className="flex-1 py-2 px-3 rounded bg-[#FF3B00] text-white font-semibold transition cursor-pointer"
                         >
-                          🖐️ Kurva Manusia (Bezier)
+                          [TOUCH] Kurva Manusia (Bezier)
                         </button>
                         <button
                           onClick={() => drawTouchCurve('bot')}
                           className="flex-1 py-2 px-3 rounded surface-card border ledger-border hover:border-red-500 font-semibold transition cursor-pointer"
                         >
-                          🤖 Garis Bot (Terblokir)
+                          [BOT] Garis Linier (Terblokir)
                         </button>
                       </div>
                     </div>
@@ -634,7 +619,7 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
               )}
 
               {/* =====================================
-                   WRAPPER B: PHOTO EVIDENCE GALLERY
+                   WRAPPER B: PHOTO EVIDENCE GALLERY (VIEW ONLY FOR VISITORS)
                    ===================================== */}
               {rightMode === 'photo' && currentProject.hasPhotos && (
                 <div className="space-y-3">
@@ -656,42 +641,20 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 font-mono text-xs">
-                      {currentProject.photos.map((_, pIdx) => (
-                        <button
-                          key={pIdx}
-                          onClick={() => setCurrentPhotoIdx(pIdx)}
-                          className={`px-2.5 py-1 rounded border font-mono text-xs transition cursor-pointer ${
-                            pIdx === currentPhotoIdx
-                              ? 'border-[#FF3B00] bg-[#FF3B00] text-white font-bold'
-                              : 'ledger-border surface-card hover:border-[#FF3B00]'
-                          }`}
-                        >
-                          Foto #{pIdx + 1}
-                        </button>
-                      ))}
-                    </div>
-
-                    <label className="cursor-pointer px-2.5 py-1.5 rounded border border-dashed border-[#FF3B00] text-[#FF3B00] hover:bg-[#FF3B00] hover:text-white transition font-mono text-[11px] font-bold inline-flex items-center gap-1">
-                      <span>+ Pasang Foto Screenshot</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleUploadProjectPhoto}
-                      />
-                    </label>
-                  </div>
-
-                  <div className="p-2.5 rounded surface-card border ledger-border font-mono text-[11px] text-secondary-tone flex items-center justify-between">
-                    <span>💡 Foto yang kamu upload di atas otomatis tersimpan ke memori browser &amp; web.</span>
-                    <button
-                      onClick={openAdmin}
-                      className="text-[#FF3B00] font-bold hover:underline cursor-pointer"
-                    >
-                      Buka Panel Admin &rarr;
-                    </button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {currentProject.photos.map((_, pIdx) => (
+                      <button
+                        key={pIdx}
+                        onClick={() => setCurrentPhotoIdx(pIdx)}
+                        className={`px-2.5 py-1 rounded border font-mono text-xs transition cursor-pointer ${
+                          pIdx === currentPhotoIdx
+                            ? 'border-[#FF3B00] bg-[#FF3B00] text-white font-bold'
+                            : 'ledger-border surface-card hover:border-[#FF3B00]'
+                        }`}
+                      >
+                        {t.workbench.btnNextPhoto} #{pIdx + 1}
+                      </button>
+                    ))}
                   </div>
                 </div>
               )}
@@ -699,8 +662,8 @@ export const WorkbenchSection: React.FC<{ activeIndex: number; onSelectTab: (idx
 
             {/* Bottom Hardware Assurance Note */}
             <div className="mt-4 pt-3 border-t ledger-border flex items-center justify-between font-mono text-[11px] text-secondary-tone">
-              <span>✔ DIUJI DI PERANGKAT FISIK</span>
-              <span>{rightMode === 'sim' ? 'MODE: SIMULATOR AKTIF' : 'MODE: BUKTI FOTO PROYEK'}</span>
+              <span>{t.workbench.hardwareAssurance}</span>
+              <span>{rightMode === 'sim' ? t.workbench.modeSimActive : t.workbench.modePhotoActive}</span>
             </div>
           </div>
         </div>
