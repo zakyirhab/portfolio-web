@@ -2,53 +2,126 @@
 
 @layer base {
   :root {
-    --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-display: 'Space Grotesk', -apple-system, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+    --bg-main: #F4F1EA;
+    --bg-surface: #FAF8F5;
+    --bg-muted: #EAE5D9;
+    --text-main: #121212;
+    --text-muted: #52504C;
+    --border-line: #CFC8B8;
+    --accent-primary: #FF3B00;
+    --accent-secondary: #1E3A8A;
+    --grid-color: rgba(18, 18, 18, 0.045);
   }
 
-  html {
-    scroll-behavior: smooth;
-    background-color: #030712;
-    color: #f3f4f6;
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
+  html.blueprint-mode {
+    --bg-main: #091326;
+    --bg-surface: #0F1E36;
+    --bg-muted: #162947;
+    --text-main: #F1F5F9;
+    --text-muted: #94A3B8;
+    --border-line: #233D63;
+    --accent-primary: #FF5522;
+    --accent-secondary: #38BDF8;
+    --grid-color: rgba(56, 189, 248, 0.06);
   }
 
   body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    background-image: 
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 32px 32px;
+    transition: background-color 0.25s ease, color 0.25s ease;
     margin: 0;
     min-height: 100dvh;
-    background: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.4) 0%, rgba(3, 7, 18, 1) 75%);
-    background-attachment: fixed;
     overflow-x: hidden;
   }
 
-  /* Custom scrollbar for engineering dark aesthetic */
-  ::-webkit-scrollbar {
-    width: 6px;
+  .font-display {
+    font-family: var(--font-display);
   }
-  ::-webkit-scrollbar-track {
-    background: #030712;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #1f2937;
-    border-radius: 9999px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #374151;
+
+  .font-mono {
+    font-family: var(--font-mono);
   }
 }
 
-/* Glassmorphism Refraction & Shimmer rules */
-.liquid-card {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 20px 40px -15px rgba(0, 0, 0, 0.5);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.ledger-border {
+  border-color: var(--border-line);
 }
 
-.liquid-card:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: translateY(-2px);
+.surface-card {
+  background-color: var(--bg-surface);
+  border-color: var(--border-line);
+}
+
+.surface-muted {
+  background-color: var(--bg-muted);
+  border-color: var(--border-line);
+}
+
+.text-secondary-tone {
+  color: var(--text-muted);
+}
+
+/* Stamp effect */
+.stamp-badge {
+  border: 2px solid var(--accent-primary);
+  color: var(--accent-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  box-shadow: 2px 2px 0px var(--accent-primary);
+}
+
+/* Brutalist Architectural Button */
+.btn-architect {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+  border: 1.5px solid var(--text-main);
+  box-shadow: 4px 4px 0px var(--accent-primary);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-architect:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--accent-primary);
+}
+.btn-architect:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--accent-primary);
+}
+
+.btn-safety {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  border: 1.5px solid var(--text-main);
+  box-shadow: 4px 4px 0px var(--text-main);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-safety:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--text-main);
+}
+.btn-safety:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--text-main);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-muted);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 2px;
 }

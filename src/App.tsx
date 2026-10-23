@@ -1,22 +1,39 @@
-import { Navbar } from './components/Navbar'
-import { Hero } from './components/Hero'
-import { ForemanFramework } from './components/ForemanFramework'
-import { FeaturedSystems } from './components/FeaturedSystems'
-import { CapabilitiesMatrix } from './components/CapabilitiesMatrix'
-import { ContactFooter } from './components/ContactFooter'
+import { useState } from 'react'
+import { PortfolioProvider } from './context/PortfolioContext'
+import { Header } from './components/Header'
+import { HeroSection } from './components/HeroSection'
+import { AiLabSection } from './components/AiLabSection'
+import { WorkbenchSection } from './components/WorkbenchSection'
+import { MethodologySection } from './components/MethodologySection'
+import { FooterSection } from './components/FooterSection'
+import { AdminModal } from './components/AdminModal'
+
+function PortfolioMain() {
+  const [activeSystemTab, setActiveSystemTab] = useState<number>(0)
+
+  return (
+    <div className="min-h-[100dvh] flex flex-col">
+      <Header />
+      <main className="max-w-7xl mx-auto px-4 sm:px-8 flex-1 w-full">
+        <HeroSection onSelectSystemTab={(idx) => setActiveSystemTab(idx)} />
+        <AiLabSection />
+        <WorkbenchSection
+          activeIndex={activeSystemTab}
+          onSelectTab={(idx) => setActiveSystemTab(idx)}
+        />
+        <MethodologySection />
+      </main>
+      <FooterSection />
+      <AdminModal />
+    </div>
+  )
+}
 
 export function App() {
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-gray-950 text-gray-100 selection:bg-emerald-500/20 selection:text-emerald-300">
-      <Navbar />
-      <main className="flex-1">
-        <Hero />
-        <FeaturedSystems />
-        <ForemanFramework />
-        <CapabilitiesMatrix />
-      </main>
-      <ContactFooter />
-    </div>
+    <PortfolioProvider>
+      <PortfolioMain />
+    </PortfolioProvider>
   )
 }
 
