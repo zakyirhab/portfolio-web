@@ -2,7 +2,7 @@ import React from 'react'
 import { usePortfolio } from '../context/PortfolioContext'
 
 export const Header: React.FC = () => {
-  const { profile, isBlueprintMode, toggleTheme, language, setLanguage, t } = usePortfolio()
+  const { profile, isBlueprintMode, toggleTheme, language, setLanguage, t, designVariant, setDesignVariant } = usePortfolio()
 
   return (
     <header className="sticky top-0 z-40 border-b ledger-border backdrop-blur-md bg-opacity-95 surface-card">
@@ -27,8 +27,34 @@ export const Header: React.FC = () => {
           <a href="#methodology" className="hover:text-[#FF3B00] transition">{t.nav.methodology}</a>
         </nav>
 
-        {/* Clean Right Actions: Language Switcher + Theme Switcher + Single CTA */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Clean Right Actions: Theme Selector (A/B) + Language Switcher + Dark/Light + Single CTA */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Realtime Theme Switcher (Design Variant) */}
+          <div className="hidden sm:flex items-center rounded border ledger-border surface-muted p-0.5 font-mono text-[11px]">
+            <button
+              onClick={() => setDesignVariant('blueprint')}
+              title="Tema Lama: Industrial Blueprint Ledger"
+              className={`px-2 py-1 rounded font-bold transition cursor-pointer ${
+                designVariant === 'blueprint'
+                  ? 'bg-[#FF3B00] text-white shadow-sm'
+                  : 'text-secondary-tone hover:text-[#FF3B00]'
+              }`}
+            >
+              BLUEPRINT
+            </button>
+            <button
+              onClick={() => setDesignVariant('cyber')}
+              title="Tema Baru: Modern Cyber Architect (Figma)"
+              className={`px-2 py-1 rounded font-bold transition cursor-pointer ${
+                designVariant === 'cyber'
+                  ? 'bg-[#FF3B00] text-white shadow-sm'
+                  : 'text-secondary-tone hover:text-[#FF3B00]'
+              }`}
+            >
+              CYBER/FIGMA
+            </button>
+          </div>
+
           {/* Language Toggle ID / EN */}
           <div className="flex items-center rounded border ledger-border surface-muted p-0.5 font-mono text-xs">
             <button

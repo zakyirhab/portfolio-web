@@ -161,6 +161,10 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
           desc: 'Membimbing siswa SMK meraih Juara 1 Kota & Juara 3 Provinsi Jawa Timur pada ajang LKS Artificial Intelligence.'
         },
         {
+          title: 'AI Mastery - Orbit Future Academy',
+          desc: 'Studi mendalam & implementasi computer vision, NLP, dan orkestrasi machine learning industri.'
+        },
+        {
           title: 'Eks IT Support Universitas',
           desc: 'Terbiasa menangani troubleshooting perangkat fisik dan berkomunikasi lugas dengan pengguna non-teknis.'
         }
@@ -298,6 +302,10 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
         {
           title: 'National AI Competition Mentor',
           desc: 'Mentored vocational students to win 1st Place City and 3rd Place East Java Province at the official Artificial Intelligence Skills Competition.'
+        },
+        {
+          title: 'AI Mastery - Orbit Future Academy',
+          desc: 'Deep study and production implementation of computer vision, NLP, and enterprise machine learning.'
         },
         {
           title: 'Former University IT Support',

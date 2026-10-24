@@ -29,6 +29,11 @@ export const DEFAULT_PROFILE: ProfileData = {
     },
     {
       id: 'tr-3',
+      title: 'AI Mastery - Orbit Future Academy',
+      desc: 'Sertifikasi & implementasi praktis machine learning, deep learning, dan arsitektur model AI tingkat lanjut.'
+    },
+    {
+      id: 'tr-4',
       title: 'Eks IT Support Universitas',
       desc: 'Terbiasa menangani troubleshooting perangkat fisik dan berkomunikasi lugas dengan pengguna non-teknis.'
     }
