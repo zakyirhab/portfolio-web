@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import type { ProfileData, BlueprintProject, PortfolioState, ProjectPhoto, Language, DesignVariant } from '../types/portfolio'
+import type { ProfileData, BlueprintProject, PortfolioState, ProjectPhoto, Language } from '../types/portfolio'
 import { DEFAULT_PROFILE, DEFAULT_PROJECTS } from '../data/defaultBlueprintData'
 import { TRANSLATIONS, type TranslationDictionary } from '../data/translations'
 
@@ -9,9 +9,6 @@ interface PortfolioContextType {
   adminPin: string
   isBlueprintMode: boolean
   toggleTheme: () => void
-  designVariant: DesignVariant
-  setDesignVariant: (variant: DesignVariant) => void
-  toggleDesignVariant: () => void
   language: Language
   setLanguage: (lang: Language) => void
   toggleLanguage: () => void
@@ -40,7 +37,6 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [projects, setProjects] = useState<BlueprintProject[]>(DEFAULT_PROJECTS)
   const [adminPin, setAdminPin] = useState<string>(DEFAULT_PIN)
   const [isBlueprintMode, setIsBlueprintMode] = useState<boolean>(false)
-  const [designVariant, setDesignVariantState] = useState<DesignVariant>('cyber')
   const [language, setLanguageState] = useState<Language>('id')
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false)
 
@@ -54,15 +50,9 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (parsed.projects && parsed.projects.length > 0) setProjects(parsed.projects)
         if (parsed.adminPin) setAdminPin(parsed.adminPin)
         if (parsed.language) setLanguageState(parsed.language)
-        if (parsed.designVariant) setDesignVariantState(parsed.designVariant)
       }
     } catch (e) {
       console.error('Failed to load portfolio state', e)
-    }
-
-    const savedVariant = localStorage.getItem('zaky_portfolio_variant') as DesignVariant | null
-    if (savedVariant === 'cyber' || savedVariant === 'blueprint') {
-      setDesignVariantState(savedVariant)
     }
 
     const savedTheme = localStorage.getItem('zaky_portfolio_theme')
@@ -82,28 +72,15 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     newProfile: ProfileData,
     newProjects: BlueprintProject[],
     newPin: string,
-    newLang: Language = language,
-    newVariant: DesignVariant = designVariant
+    newLang: Language = language
   ) => {
     const payload: PortfolioState = {
       profile: newProfile,
       projects: newProjects,
       adminPin: newPin,
-      language: newLang,
-      designVariant: newVariant
+      language: newLang
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
-  }
-
-  const setDesignVariant = (variant: DesignVariant) => {
-    setDesignVariantState(variant)
-    localStorage.setItem('zaky_portfolio_variant', variant)
-    saveState(profile, projects, adminPin, language, variant)
-  }
-
-  const toggleDesignVariant = () => {
-    const next = designVariant === 'cyber' ? 'blueprint' : 'cyber'
-    setDesignVariant(next)
   }
 
   const toggleTheme = () => {
@@ -238,9 +215,6 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         adminPin,
         isBlueprintMode,
         toggleTheme,
-        designVariant,
-        setDesignVariant,
-        toggleDesignVariant,
         language,
         setLanguage,
         toggleLanguage,

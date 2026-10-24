@@ -1,5 +1,4 @@
 export type Language = 'id' | 'en'
-export type DesignVariant = 'cyber' | 'blueprint'
 
 export interface TrackRecordItem {
   id: string
@@ -48,5 +47,4 @@ export interface PortfolioState {
   projects: BlueprintProject[]
   adminPin: string
   language?: Language
-  designVariant?: DesignVariant
 }

@@ -2,19 +2,19 @@ import React from 'react'
 import { usePortfolio } from '../context/PortfolioContext'
 
 export const Header: React.FC = () => {
-  const { profile, isBlueprintMode, toggleTheme, language, setLanguage, t, designVariant, setDesignVariant } = usePortfolio()
+  const { profile, isBlueprintMode, toggleTheme, language, setLanguage, t } = usePortfolio()
 
   return (
     <header className="sticky top-0 z-40 border-b ledger-border backdrop-blur-md bg-opacity-95 surface-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Brand Name Directly Without Box */}
+        {/* Brand Name Directly */}
         <div className="flex items-center gap-3 shrink-0">
           <div className="flex items-center gap-2.5">
             <span className="font-display font-bold text-base sm:text-lg tracking-tight">
               {profile.fullName}
             </span>
             <span className="hidden sm:inline-block text-[10px] font-mono px-2 py-0.5 rounded surface-muted border ledger-border font-semibold text-[#FF3B00]">
-              {profile.brandTitle}
+              SYSTEM ARCHITECT
             </span>
           </div>
         </div>
@@ -27,34 +27,8 @@ export const Header: React.FC = () => {
           <a href="#methodology" className="hover:text-[#FF3B00] transition">{t.nav.methodology}</a>
         </nav>
 
-        {/* Clean Right Actions: Theme Selector (A/B) + Language Switcher + Dark/Light + Single CTA */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Realtime Theme Switcher (Design Variant) */}
-          <div className="hidden sm:flex items-center rounded border ledger-border surface-muted p-0.5 font-mono text-[11px]">
-            <button
-              onClick={() => setDesignVariant('blueprint')}
-              title="Tema Lama: Industrial Blueprint Ledger"
-              className={`px-2 py-1 rounded font-bold transition cursor-pointer ${
-                designVariant === 'blueprint'
-                  ? 'bg-[#FF3B00] text-white shadow-sm'
-                  : 'text-secondary-tone hover:text-[#FF3B00]'
-              }`}
-            >
-              BLUEPRINT
-            </button>
-            <button
-              onClick={() => setDesignVariant('cyber')}
-              title="Tema Baru: Modern Cyber Architect (Figma)"
-              className={`px-2 py-1 rounded font-bold transition cursor-pointer ${
-                designVariant === 'cyber'
-                  ? 'bg-[#FF3B00] text-white shadow-sm'
-                  : 'text-secondary-tone hover:text-[#FF3B00]'
-              }`}
-            >
-              CYBER/FIGMA
-            </button>
-          </div>
-
+        {/* Clean Right Actions: Language Switcher + Dark/Light + WhatsApp CTA */}
+        <div className="flex items-center gap-2.5 shrink-0">
           {/* Language Toggle ID / EN */}
           <div className="flex items-center rounded border ledger-border surface-muted p-0.5 font-mono text-xs">
             <button
@@ -79,7 +53,7 @@ export const Header: React.FC = () => {
             </button>
           </div>
 
-          {/* Theme Switcher without Emojis */}
+          {/* Theme Switcher without Emojis: [LT] vs [DK] */}
           <button
             onClick={toggleTheme}
             title={isBlueprintMode ? t.nav.themeLight : t.nav.themeDark}
