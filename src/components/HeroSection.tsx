@@ -92,29 +92,9 @@ export const HeroSection: React.FC<{ onSelectSystemTab: (idx: number) => void }>
   const currentDiag = DIAGNOSIS_ITEMS[selectedDiag] || DIAGNOSIS_ITEMS[0]
 
   return (
-    <section id="manifesto" className="py-10 sm:py-14 border-b ledger-border">
-      {/* Top Architectural Specification Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 border ledger-border surface-card rounded-t-lg overflow-hidden font-mono text-xs">
-        <div className="p-3 border-r border-b sm:border-b-0 ledger-border">
-          <span className="text-secondary-tone block text-[10px]">{t.hero.roleMain}</span>
-          <span className="font-bold text-[#FF3B00]">{profile.brandTitle}</span>
-        </div>
-        <div className="p-3 sm:border-r border-b sm:border-b-0 ledger-border">
-          <span className="text-secondary-tone block text-[10px]">{t.hero.flexibility}</span>
-          <span className="font-bold">{t.hero.flexibilityVal}</span>
-        </div>
-        <div className="p-3 border-r ledger-border">
-          <span className="text-secondary-tone block text-[10px]">{t.hero.speed}</span>
-          <span className="font-bold">{t.hero.speedVal}</span>
-        </div>
-        <div className="p-3">
-          <span className="text-secondary-tone block text-[10px]">{t.hero.audit}</span>
-          <span className="font-bold">{t.hero.auditVal}</span>
-        </div>
-      </div>
-
+    <section id="manifesto" className="py-8 sm:py-12 border-b ledger-border">
       {/* Main Hero Ledger Body */}
-      <div className="border-x border-b ledger-border surface-card p-6 sm:p-10 rounded-b-lg shadow-sm">
+      <div className="border ledger-border surface-card p-6 sm:p-10 rounded-lg shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
           <span className="stamp-badge px-2.5 py-0.5 text-[11px] font-mono rounded">
             {t.hero.stamp}
@@ -156,26 +136,39 @@ export const HeroSection: React.FC<{ onSelectSystemTab: (idx: number) => void }>
                 </div>
               </div>
 
-              {/* Condensed Background & Track Record */}
-              <div className="space-y-2 flex-1">
+              {/* Condensed Dynamic Track Record (Title Only Chips from Admin) */}
+              <div className="space-y-2.5 flex-1">
                 <div className="flex flex-wrap items-center justify-between gap-1">
-                  <span className="font-mono text-[11px] font-bold text-[#FF3B00] uppercase">
+                  <span className="font-mono text-[11px] font-bold text-[#FF3B00] uppercase tracking-wider">
                     {t.hero.trackRecordHeader}
                   </span>
                   <span className="font-mono text-[10px] px-2 py-0.5 rounded surface-card border ledger-border font-semibold">
                     {profile.degree}
                   </span>
                 </div>
-                <ul className="space-y-1.5 text-xs leading-relaxed">
-                  {t.hero.trackRecords.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-[#FF3B00] font-bold">&bull;</span>
-                      <span>
-                        <strong>{item.title}:</strong> {item.desc}
+                <div className="flex flex-wrap gap-1.5 font-mono text-xs">
+                  {profile.trackRecord && profile.trackRecord.length > 0 ? (
+                    profile.trackRecord.map((item) => (
+                      <span
+                        key={item.id}
+                        className="px-2.5 py-1 rounded surface-card border ledger-border font-semibold text-[11px] flex items-center gap-1.5 hover:border-[#FF3B00] transition"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B00]"></span>
+                        <span>{item.title}</span>
                       </span>
-                    </li>
-                  ))}
-                </ul>
+                    ))
+                  ) : (
+                    t.hero.trackRecords.map((item, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 rounded surface-card border ledger-border font-semibold text-[11px] flex items-center gap-1.5"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B00]"></span>
+                        <span>{item.title}</span>
+                      </span>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
 

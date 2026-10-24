@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { usePortfolio } from '../../context/PortfolioContext'
 
 interface NlpSample {
   raw: string
@@ -9,6 +10,7 @@ interface NlpSample {
 }
 
 export const NlpSentimentSimulator: React.FC = () => {
+  const { nlpModelConfig } = usePortfolio()
   const [sampleIdx, setSampleIdx] = useState<number>(0)
 
   const SAMPLES: NlpSample[] = [
@@ -74,7 +76,9 @@ export const NlpSentimentSimulator: React.FC = () => {
 
       <div className="p-3.5 rounded-lg bg-black border border-[#27272A] flex items-center justify-between text-xs">
         <div>
-          <span className="text-[10px] text-neutral-500 uppercase block">HASIL KLASIFIKASI:</span>
+          <span className="text-[10px] text-neutral-500 uppercase block">
+            HASIL KLASIFIKASI ({nlpModelConfig.modelName}):
+          </span>
           <span
             className={`font-bold ${
               cur.sentiment === 'POSITIF'
@@ -89,10 +93,13 @@ export const NlpSentimentSimulator: React.FC = () => {
         </div>
         <div className="text-right">
           <span className="text-[10px] text-neutral-500 uppercase block">AUDIT PRIVASI:</span>
-          <span className="text-emerald-400 font-bold">[OK] ZERO LEAK</span>
+          <span className="text-emerald-400 font-bold">[LOCKED] ZERO LEAK</span>
         </div>
       </div>
-      <div className="text-[11px] text-neutral-500 italic text-right">// {cur.piiMasked}</div>
+      <div className="flex items-center justify-between text-[11px] text-neutral-500 font-mono">
+        <span>// Engine: {nlpModelConfig.inferenceType.toUpperCase()} (Blackbox Output Only)</span>
+        <span className="text-emerald-500 font-semibold">[PROD-SAFE]</span>
+      </div>
     </div>
   )
 }

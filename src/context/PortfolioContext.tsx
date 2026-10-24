@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import type { ProfileData, BlueprintProject, PortfolioState, ProjectPhoto, Language } from '../types/portfolio'
-import { DEFAULT_PROFILE, DEFAULT_PROJECTS } from '../data/defaultBlueprintData'
+import type { ProfileData, BlueprintProject, PortfolioState, ProjectPhoto, Language, NlpModelConfig } from '../types/portfolio'
+import { DEFAULT_PROFILE, DEFAULT_PROJECTS, DEFAULT_NLP_MODEL_CONFIG } from '../data/defaultBlueprintData'
 import { TRANSLATIONS, type TranslationDictionary } from '../data/translations'
 
 interface PortfolioContextType {
   profile: ProfileData
   projects: BlueprintProject[]
   adminPin: string
+  nlpModelConfig: NlpModelConfig
+  updateNlpModelConfig: (cfg: Partial<NlpModelConfig>) => void
   isBlueprintMode: boolean
   toggleTheme: () => void
   language: Language
@@ -36,6 +38,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [profile, setProfile] = useState<ProfileData>(DEFAULT_PROFILE)
   const [projects, setProjects] = useState<BlueprintProject[]>(DEFAULT_PROJECTS)
   const [adminPin, setAdminPin] = useState<string>(DEFAULT_PIN)
+  const [nlpModelConfig, setNlpModelConfig] = useState<NlpModelConfig>(DEFAULT_NLP_MODEL_CONFIG)
   const [isBlueprintMode, setIsBlueprintMode] = useState<boolean>(false)
   const [language, setLanguageState] = useState<Language>('id')
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false)
@@ -50,6 +53,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (parsed.projects && parsed.projects.length > 0) setProjects(parsed.projects)
         if (parsed.adminPin) setAdminPin(parsed.adminPin)
         if (parsed.language) setLanguageState(parsed.language)
+        if (parsed.nlpModelConfig) setNlpModelConfig(parsed.nlpModelConfig)
       }
     } catch (e) {
       console.error('Failed to load portfolio state', e)
@@ -72,15 +76,25 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     newProfile: ProfileData,
     newProjects: BlueprintProject[],
     newPin: string,
-    newLang: Language = language
+    newLang: Language = language,
+    newNlpConfig: NlpModelConfig = nlpModelConfig
   ) => {
     const payload: PortfolioState = {
       profile: newProfile,
       projects: newProjects,
       adminPin: newPin,
-      language: newLang
+      language: newLang,
+      nlpModelConfig: newNlpConfig
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
+  }
+
+  const updateNlpModelConfig = (cfg: Partial<NlpModelConfig>) => {
+    setNlpModelConfig((prev) => {
+      const updated = { ...prev, ...cfg }
+      saveState(profile, projects, adminPin, language, updated)
+      return updated
+    })
   }
 
   const toggleTheme = () => {
@@ -213,6 +227,8 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         profile,
         projects,
         adminPin,
+        nlpModelConfig,
+        updateNlpModelConfig,
         isBlueprintMode,
         toggleTheme,
         language,

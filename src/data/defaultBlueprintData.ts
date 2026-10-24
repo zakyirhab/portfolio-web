@@ -1,16 +1,23 @@
-import type { ProfileData, BlueprintProject } from '../types/portfolio'
+import type { ProfileData, BlueprintProject, NlpModelConfig } from '../types/portfolio'
+
+export const DEFAULT_NLP_MODEL_CONFIG: NlpModelConfig = {
+  modelName: 'IndoBERT-SlangNormalizer-v2.4',
+  version: '2.4.1 (Protected)',
+  inferenceType: 'rule_based',
+  isProtected: true
+}
 
 export const DEFAULT_PROFILE: ProfileData = {
   fullName: 'ZAKY IRHAB',
-  brandTitle: 'AI-ORCHESTRATED ARCHITECT',
-  roleTitle: 'MANDOR TEKNIS SISTEM & OTOMASI AI',
-  heroTagline: 'AI-Orchestrated System Architect.',
-  heroSubheadline: 'Riset Cepat, Otomasi AI Apapun, Siap Produksi.',
+  brandTitle: 'SYSTEM ARCHITECT',
+  roleTitle: 'SYSTEM ARCHITECT & PRODUCT BUILDER',
+  heroTagline: 'System Architect & Product Builder.',
+  heroSubheadline: 'Merancang Sistem, Mengorkestrasi AI, Menguji di Kasus Nyata.',
   intro1:
-    'Berlatar belakang Sistem Informasi, saya menjembatani logika bisnis, analitik data, dan rekayasa sistem dengan mengorkestrasi armada AI modern untuk membangun aplikasi maupun otomasi dalam hitungan hari, bukan bulan.',
+    'Saya membantu bisnis dan founder membangun aplikasi, sistem backend, dan otomasi cerdas tanpa berbulan-bulan menunggu. Cepat, aman, dan langsung siap pakai.',
   intro2:
-    'Dari merancang sistem kasir & proteksi dokumen, mengolah data opini publik skala regional–nasional, hingga membimbing juara LKS Artificial Intelligence Jawa Timur—saya terbiasa mempelajari domain baru dengan cepat, menerjemahkan bahasa teknis menjadi solusi praktis, dan menguji langsung hasilnya di perangkat nyata.',
-  degree: 'S.Kom / Information Systems',
+    'Setiap kode yang dihasilkan AI diaudit ketat dan diuji di skenario lapangan nyata.',
+  degree: 'S.Kom / Sistem Informasi',
   profilePhoto: 'https://placehold.co/300x360/121212/F4F1EA?text=FOTO\\nZAKY+IRHAB',
   whatsappNumber: '6282236358872',
   whatsappMessage: 'Halo Zaky, saya ingin berdiskusi mengenai kebutuhan sistem / otomasi AI.',
@@ -19,23 +26,23 @@ export const DEFAULT_PROFILE: ProfileData = {
   trackRecord: [
     {
       id: 'tr-1',
-      title: 'Data & Strategic Analytics',
-      desc: 'Berpengalaman mengolah data medsos & riset komunikasi strategis tokoh publik/institusi (Python, Tableau, Sheets).'
+      title: 'S.Kom / Sistem Informasi',
+      desc: ''
     },
     {
       id: 'tr-2',
-      title: 'AI Mentor Berprestasi',
-      desc: 'Membimbing siswa SMK meraih Juara 1 Kota & Juara 3 Provinsi Jawa Timur pada ajang LKS Artificial Intelligence.'
+      title: 'Strategic Data Analytics',
+      desc: ''
     },
     {
       id: 'tr-3',
-      title: 'AI Mastery - Orbit Future Academy',
-      desc: 'Sertifikasi & implementasi praktis machine learning, deep learning, dan arsitektur model AI tingkat lanjut.'
+      title: 'East Java LKS AI Mentor',
+      desc: ''
     },
     {
       id: 'tr-4',
-      title: 'Eks IT Support Universitas',
-      desc: 'Terbiasa menangani troubleshooting perangkat fisik dan berkomunikasi lugas dengan pengguna non-teknis.'
+      title: 'AI Mastery - Orbit Future Academy',
+      desc: ''
     }
   ]
 }
@@ -48,14 +55,14 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     subtitle: 'Android Native • Bluetooth Thermal ESC/POS • Dynamic QRIS',
     tags: ['ANDROID NATIVE', 'ATOMIC SHIFT', 'ESC/POS THERMAL'],
     problem:
-      'Menutup celah selisih uang pergantian shift kasir, mencegah stok barang minus di pembukuan, dan memastikan cetak struk Bluetooth stabil.',
+      'Lahir dari kebutuhan toko retail yang kesulitan merekap kas dan stok secara manual, sistem kasir Android ini mengunci otomatis pergantian shift kasir (anti-selisih) serta menolak transaksi jika stok gudang kurang dari permintaan.',
     features: [
-      '[OK] Atomic Shift Closing: Kunci berantai antar shift kasir.',
-      '[OK] Anti-Minus Guard: Tolak transaksi otomatis jika stok kurang.',
-      '[OK] Direct ESC/POS & Dynamic QRIS: Cetak struk thermal cepat.'
+      '[OK] Atomic Shift Closing: Kunci berantai saldo kas antar shift kasir.',
+      '[OK] Anti-Minus Guard: Tolak transaksi otomatis jika stok fisik kurang.',
+      '[OK] Direct ESC/POS & Dynamic QRIS: Cetak struk thermal cepat & QRIS otomatis.'
     ],
     mandorRole: [
-      '• Merancang logika akuntansi & kunci shift.',
+      '• Merancang logika akuntansi kasir & kunci shift.',
       '• Menguji langsung di tablet & printer fisik.'
     ],
     aiRole: [
@@ -81,11 +88,11 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     subtitle: '245 Halaman PDF Canvas Streaming • PostgreSQL Atomic Lock',
     tags: ['CANVAS DRM', 'POSTGRESQL LOCK', 'MAX 2 DEVICES'],
     problem:
-      'Melindungi dokumen riset 245 halaman agar tidak bisa diunduh paksa (IDM) dan membatasi satu lisensi hanya untuk maksimal 2 perangkat aktif.',
+      'Menjawab masalah pencurian dokumen digital berbayar dan patungan akun ilegal, katalog 245 halaman ini ditampilkan lewat kanvas streaming tanpa file mentah serta dikunci ketat maksimal ke 2 perangkat aktif via PostgreSQL.',
     features: [
-      '[OK] Canvas Page Streaming: Tanpa mengekspos URL PDF asli.',
-      '[OK] PostgreSQL Row-Locking: Kunci keras maksimal 2 device.',
-      '[OK] CORS-Free Proxy: Streaming cepat dari penyimpanan cloud.'
+      '[OK] Canvas Page Streaming: Render per lembar tanpa ekspos file PDF mentah.',
+      '[OK] PostgreSQL Row-Locking: Kunci keras maksimal 2 perangkat aktif.',
+      '[OK] CORS-Free Proxy: Streaming cepat langsung dari cloud storage.'
     ],
     mandorRole: [
       '• Merancang query kunci atomik PostgreSQL.',
@@ -114,11 +121,11 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     subtitle: 'Pipeline Puluhan Ribu Opini Bahasa Indonesia • Anonim & Etis',
     tags: ['INDONESIAN NLP', 'SLANG NORMALIZER', 'PRIVACY SAFE'],
     problem:
-      'Membersihkan puluhan ribu komentar medsos penuh singkatan/bahasa gaul Indonesia menjadi klasifikasi sentimen yang akurat tanpa membuka data rahasia klien.',
+      'Mengatasi kekacauan puluhan ribu komentar netizen yang penuh singkatan dan bahasa daerah, pipeline NLP ini otomatis membakukan bahasa gaul Indonesia untuk klasifikasi sentimen akurat sambil menyensor data pribadi warga.',
     features: [
       '[OK] Kamus Normalisasi Slang & Singkatan Lokal Indonesia.',
       '[OK] Batch Pipeline Stabil untuk Puluhan Ribu Baris Teks.',
-      '[OK] Redaksi Otomatis Identitas & Data Rahasia (PII).'
+      '[OK] Redaksi Otomatis Identitas & Data Rahasia Warga (PII).'
     ],
     mandorRole: [
       '• Merancang arsitektur kamus slang & sanitasi data.',
@@ -138,11 +145,11 @@ export const DEFAULT_PROJECTS: BlueprintProject[] = [
     subtitle: 'Real Android Hardware via ADB • Bezier Human Touch Curve',
     tags: ['PHYSICAL ANDROID', 'ADB HARDWARE', 'BEZIER TOUCH'],
     problem:
-      'Menjalankan otomasi di atas HP Android fisik (bukan emulator) dengan lekukan sentuhan jari manusia alami agar aman dari deteksi anti-bot.',
+      'Dibuat karena bot otomasi biasa selalu terblokir akibat deteksi emulator komputer, sistem ini mengendalikan HP Android fisik langsung dengan kurva sentuhan jari melengkung alami yang lolos deteksi keamanan aplikasi.',
     features: [
       '[OK] 100% Perangkat Android Fisik via Jembatan ADB.',
-      '[OK] Generator Kurva Bezier & Micro-Jitter Manusia Alami.',
-      '[OK] Auto-Recovery Saat Aplikasi Target Crash/Pop-up.'
+      '[OK] Generator Kurva Bezier & Micro-Jitter Sentuhan Manusia Alami.',
+      '[OK] Auto-Recovery Saat Aplikasi Target Mengalami Pop-up/Crash.'
     ],
     mandorRole: [
       '• Merancang rumus matematika kurva Bezier.',

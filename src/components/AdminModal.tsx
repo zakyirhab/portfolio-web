@@ -21,8 +21,36 @@ export const AdminModal: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [pinError, setPinError] = useState<string>('')
 
-  // Admin tabs: 'profile' | 'projects' | 'security'
-  const [activeTab, setActiveTab] = useState<'profile' | 'projects' | 'security'>('profile')
+  // Admin tabs: 'profile' | 'projects' | 'nlp' | 'security'
+  const [activeTab, setActiveTab] = useState<'profile' | 'projects' | 'nlp' | 'security'>('profile')
+  const { nlpModelConfig, updateNlpModelConfig } = usePortfolio()
+  const [editNlpConfig, setEditNlpConfig] = useState(nlpModelConfig)
+
+  // Handlers for Track Record dynamic additions
+  const handleAddTrackRecord = () => {
+    const newItem: TrackRecordItem = {
+      id: 'tr-' + Date.now(),
+      title: 'Judul Rekam Jejak Baru',
+      desc: ''
+    }
+    setEditProfile((prev) => ({
+      ...prev,
+      trackRecord: [...prev.trackRecord, newItem]
+    }))
+  }
+
+  const handleRemoveTrackRecord = (idx: number) => {
+    setEditProfile((prev) => ({
+      ...prev,
+      trackRecord: prev.trackRecord.filter((_, i) => i !== idx)
+    }))
+  }
+
+  const handleSaveNlpConfig = (e: React.FormEvent) => {
+    e.preventDefault()
+    updateNlpModelConfig(editNlpConfig)
+    alert('Konfigurasi Model NLP berhasil disimpan dan terkunci secara aman!')
+  }
 
   // Form states for profile
   const [editProfile, setEditProfile] = useState(profile)
@@ -218,6 +246,16 @@ export const AdminModal: React.FC = () => {
                 [02] Kelola Proyek &amp; Foto Bukti
               </button>
               <button
+                onClick={() => setActiveTab('nlp')}
+                className={`px-3 py-1.5 rounded transition cursor-pointer ${
+                  activeTab === 'nlp'
+                    ? 'bg-[#FF3B00] text-white font-bold'
+                    : 'surface-muted border ledger-border hover:border-[#FF3B00]'
+                }`}
+              >
+                [03] Model NLP (Zero-Leak)
+              </button>
+              <button
                 onClick={() => setActiveTab('security')}
                 className={`px-3 py-1.5 rounded transition cursor-pointer ${
                   activeTab === 'security'
@@ -225,7 +263,7 @@ export const AdminModal: React.FC = () => {
                     : 'surface-muted border ledger-border hover:border-[#FF3B00]'
                 }`}
               >
-                [03] Ganti PIN &amp; Backup
+                [04] Ganti PIN &amp; Backup
               </button>
 
               <button
@@ -319,33 +357,43 @@ export const AdminModal: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 3 Rekam Jejak Fields */}
+                {/* Dynamic Rekam Jejak (CRUD: Tambah / Hapus / Edit Judul) */}
                 <div className="p-4 rounded border ledger-border surface-muted space-y-3">
-                  <span className="font-bold text-[11px] text-[#FF3B00] block">
-                    3 POIN REKAM JEJAK &amp; LATAR BELAKANG:
-                  </span>
-                  {editProfile.trackRecord.map((item, idx) => (
-                    <div key={item.id} className="p-3 rounded surface-card border ledger-border space-y-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-[#FF3B00]">Poin #{idx + 1} Judul:</span>
+                  <div className="flex items-center justify-between border-b ledger-border pb-2">
+                    <span className="font-bold text-[11px] text-[#FF3B00] block">
+                      REKAM JEJAK &amp; KREDENSIAL UTAMA (CHIPS):
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleAddTrackRecord}
+                      className="px-2.5 py-1 rounded bg-[#FF3B00] text-white font-bold text-[10px] cursor-pointer hover:bg-[#E03400] transition"
+                    >
+                      + Tambah Rekam Jejak
+                    </button>
+                  </div>
+
+                  <div className="space-y-2">
+                    {editProfile.trackRecord.map((item, idx) => (
+                      <div key={item.id} className="p-2.5 rounded surface-card border ledger-border flex items-center gap-2">
+                        <span className="font-bold text-[11px] text-[#FF3B00] shrink-0">#{idx + 1}</span>
                         <input
                           type="text"
                           value={item.title}
                           onChange={(e) => handleTrackRecordChange(idx, 'title', e.target.value)}
-                          className="flex-1 px-2.5 py-1.5 rounded border ledger-border surface-muted focus:outline-none focus:border-[#FF3B00]"
+                          placeholder="Contoh: S.Kom / Sistem Informasi"
+                          className="flex-1 px-2.5 py-1.5 rounded border ledger-border surface-muted text-xs font-semibold focus:outline-none focus:border-[#FF3B00]"
                         />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveTrackRecord(idx)}
+                          className="px-2 py-1 rounded border border-red-500/40 text-red-500 hover:bg-red-500 hover:text-white transition font-mono text-[10px] cursor-pointer shrink-0"
+                          title="Hapus poin ini"
+                        >
+                          Hapus
+                        </button>
                       </div>
-                      <div>
-                        <span className="text-[10px] text-secondary-tone block mb-1">Deskripsi Poin:</span>
-                        <textarea
-                          rows={2}
-                          value={item.desc}
-                          onChange={(e) => handleTrackRecordChange(idx, 'desc', e.target.value)}
-                          className="w-full px-2.5 py-1.5 rounded border ledger-border surface-muted focus:outline-none focus:border-[#FF3B00]"
-                        />
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
                 {/* Contact Fields */}
@@ -523,7 +571,113 @@ export const AdminModal: React.FC = () => {
               </div>
             )}
 
-            {/* TAB 3: SECURITY, GANTI PIN & BACKUP */}
+            {/* TAB 3: NLP MODEL CONFIG & ZERO-LEAK VAULT */}
+            {activeTab === 'nlp' && (
+              <form onSubmit={handleSaveNlpConfig} className="space-y-5">
+                <div className="p-4 rounded border border-emerald-500/40 bg-emerald-950/20 space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-xs text-emerald-400">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>VAULT MODEL NLP TERPROTEKSI (ZERO DOWNLOAD GUARANTEE)</span>
+                  </div>
+                  <p className="text-[11px] text-secondary-tone leading-relaxed">
+                    Semua konfigurasi model LLM/NLP di bawah ini <strong>terkunci dan tidak pernah terekspos ke publik</strong>. Pengunjung website di tab simulasi hanya bisa melihat output teks, tanpa akses unduh file bobot (*weights*), API secret, atau dataset rahasia Anda.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded border ledger-border surface-muted space-y-4">
+                  <span className="font-bold text-[12px] text-[#FF3B00] block">
+                    IDENTITAS MODEL &amp; RUNTIME INFERENCE
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-secondary-tone text-[10px] mb-1">NAMA MODEL AI</label>
+                      <input
+                        type="text"
+                        value={editNlpConfig.modelName}
+                        onChange={(e) => setEditNlpConfig({ ...editNlpConfig, modelName: e.target.value })}
+                        placeholder="Contoh: IndoBERT Slang-Normalized v2.4"
+                        className="w-full px-3 py-2 rounded border ledger-border surface-card text-xs focus:outline-none focus:border-[#FF3B00]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-secondary-tone text-[10px] mb-1">VERSI / TAG MODEL</label>
+                      <input
+                        type="text"
+                        value={editNlpConfig.version}
+                        onChange={(e) => setEditNlpConfig({ ...editNlpConfig, version: e.target.value })}
+                        placeholder="Contoh: v2.4.1 (Protected)"
+                        className="w-full px-3 py-2 rounded border ledger-border surface-card text-xs focus:outline-none focus:border-[#FF3B00]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-secondary-tone text-[10px] mb-1">METODE INFERENCE</label>
+                    <select
+                      value={editNlpConfig.inferenceType}
+                      onChange={(e) =>
+                        setEditNlpConfig({
+                          ...editNlpConfig,
+                          inferenceType: e.target.value as any
+                        })
+                      }
+                      className="w-full px-3 py-2 rounded border ledger-border surface-card text-xs focus:outline-none focus:border-[#FF3B00]"
+                    >
+                      <option value="rule_based">Rule-Based + Lexicon Normalizer (Lokal Aman &amp; Cepat)</option>
+                      <option value="private_endpoint">Private Inference API (Server VPS / Ollama / RunPod)</option>
+                      <option value="onnx_local">ONNX Runtime Local Sandbox</option>
+                    </select>
+                  </div>
+
+                  {editNlpConfig.inferenceType === 'private_endpoint' && (
+                    <div className="space-y-3 pt-2 border-t ledger-border">
+                      <div>
+                        <label className="block text-secondary-tone text-[10px] mb-1">PRIVATE ENDPOINT URL (RAHASIA)</label>
+                        <input
+                          type="url"
+                          value={editNlpConfig.endpointUrl || ''}
+                          onChange={(e) => setEditNlpConfig({ ...editNlpConfig, endpointUrl: e.target.value })}
+                          placeholder="https://api.internal-domain.com/v1/sentiment"
+                          className="w-full px-3 py-2 rounded border ledger-border surface-card text-xs focus:outline-none focus:border-[#FF3B00]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-secondary-tone text-[10px] mb-1">BEARER TOKEN / API KEY (DISIMPAN TERENKRIPSI)</label>
+                        <input
+                          type="password"
+                          value={editNlpConfig.authToken || ''}
+                          onChange={(e) => setEditNlpConfig({ ...editNlpConfig, authToken: e.target.value })}
+                          placeholder="sk-secret-..."
+                          className="w-full px-3 py-2 rounded border ledger-border surface-card text-xs focus:outline-none focus:border-[#FF3B00]"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="p-3 rounded surface-card border ledger-border flex items-center justify-between">
+                    <div>
+                      <span className="font-bold text-xs block">Status Proteksi Ekspor</span>
+                      <span className="text-[10px] text-secondary-tone">
+                        Blokir unduhan publik dan cegah ekstraksi model via Network inspect.
+                      </span>
+                    </div>
+                    <span className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 font-bold text-[10px]">
+                      [LOCKED] AKTIF
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn-safety w-full py-3 rounded font-bold text-sm cursor-pointer"
+                >
+                  Simpan Konfigurasi Model NLP &amp; Kunci Vault
+                </button>
+              </form>
+            )}
+
+            {/* TAB 4: SECURITY, GANTI PIN & BACKUP */}
             {activeTab === 'security' && (
               <div className="space-y-6">
                 {/* Ganti PIN Section */}

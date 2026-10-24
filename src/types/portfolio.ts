@@ -42,9 +42,19 @@ export interface ProfileData {
   trackRecord: TrackRecordItem[]
 }
 
+export interface NlpModelConfig {
+  modelName: string
+  version: string
+  inferenceType: 'rule_based' | 'private_endpoint' | 'onnx_local'
+  endpointUrl?: string
+  authToken?: string
+  isProtected: boolean
+}
+
 export interface PortfolioState {
   profile: ProfileData
   projects: BlueprintProject[]
   adminPin: string
   language?: Language
+  nlpModelConfig?: NlpModelConfig
 }
